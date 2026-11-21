@@ -1,5 +1,8 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import javax.swing.*;
 
@@ -42,6 +45,7 @@ public class ReactionTest {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Reaction Test");
+            frame.setIconImages(loadApplicationIcons());
             frame.getContentPane().setBackground(BACKGROUND_COLOR);
 
             button = new JButton("START REACTION TEST");
@@ -64,6 +68,7 @@ public class ReactionTest {
                     BorderFactory.createEmptyBorder(12, 24, 12, 24)
             ));
             statsButton.setFocusPainted(false);
+            statsButton.setFocusable(false);
             statsButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             statsButton.addActionListener(e -> statScreen());
 
@@ -157,6 +162,19 @@ public class ReactionTest {
                 );
             }
         });
+    }
+
+    static List<Image> loadApplicationIcons() {
+        List<Image> icons = new ArrayList<>();
+        for (String size : Arrays.asList("16", "32", "64", "128", "256")) {
+            String resource = "/assets/icons/" + size + "x" + size + ".png";
+            java.net.URL iconUrl = ReactionTest.class.getResource(resource);
+            if (iconUrl == null) {
+                throw new IllegalStateException("Missing application icon: " + resource);
+            }
+            icons.add(new ImageIcon(iconUrl).getImage());
+        }
+        return icons;
     }
 
     static String activationKeys() {
